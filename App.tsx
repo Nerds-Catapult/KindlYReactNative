@@ -8,8 +8,6 @@ import * as FileSystem from "expo-file-system";
 
 
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
-import LoginScreen from "./screens/Auth/LoginScreen";
-import SignupScreen from "./screens/Auth/SignupScreen";
 import HomeScreen from "./screens/Home/HomeScreen";
 import { Auth } from "./utils/access_authentication";
 
