@@ -59,7 +59,7 @@ export default function SignupScreen() {
 
   return (
     <View className="w-full h-full bg-white flex flex-col items-center p-4">
-      <Text className="mt-16 font-bold text-4xl">Join Shopzetu!</Text>
+      <Text className="mt-16 font-bold text-4xl">Join Shopkndly!</Text>
       <Text className="text-xs text-black tracking-widest">
         Fill this form to register with us
       </Text>
