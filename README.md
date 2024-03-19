@@ -1,12 +1,4 @@
----
-runme:
-  id: 01HSAMCVA5264W9318B827QNQD
-  version: v3
----
 
-Here's a template for the README file for your Kindly app:
-
----
 
 # Kindly
 
