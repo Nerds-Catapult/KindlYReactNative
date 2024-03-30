@@ -12,7 +12,6 @@ Kindly is an open-source reading app developed using React Native, similar to Ki
 - **Reading Experience:** Enjoy reading books within the app.
 - **Favorites:** Add books to your favorites for easy access.
 - **Payment Integration:** Purchase books using M-Pesa.
-
 ## Getting Started
 
 To contribute to the Kindly app or set it up for development, follow these steps:
