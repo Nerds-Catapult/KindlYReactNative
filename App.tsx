@@ -1,22 +1,21 @@
+
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaView, StyleSheet } from "react-native";
-import { Asset } from "expo-asset";
-import * as FileSystem from "expo-file-system";
-
+import { SafeAreaView } from "react-native";
+import Login from "./screens/Auth/login/login";
+import Signup from "./screens/Auth/signup/signup";
 
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
 import HomeScreen from "./screens/Home/HomeScreen";
-import { Auth } from "./utils/access_authentication";
 
-const app = new Auth()
 const Stack = createStackNavigator();
 
 export default function App() {
 
   return (
+    //@ts-ignore
     <SafeAreaView className="flex-1">
       <StatusBar
         animated={true}
@@ -36,6 +35,20 @@ export default function App() {
             component={HomeScreen}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="signup"
+            component={Signup}
+            options={{
+              headerShown: true,
             }}
           />
         </Stack.Navigator>
