@@ -1,19 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
-import { WebView, WebViewNavigation } from "react-native-webview";
-import { ScrollView, SafeAreaView, TouchableOpacity, View, BackHandler, StatusBar, Text, TextInput, FlatList } from 'react-native';
-import { Chip, Drawer } from 'react-native-paper';
+import { ScrollView, TouchableOpacity, View,  Text, TextInput, FlatList } from 'react-native';
+import { Chip} from 'react-native-paper';
 
 
-import useAuthStore from '../../store';
 
 
 
 export default function HomeScreen() {
-  const store = useAuthStore();
   const navigation = useNavigation() as any;
-  const [active, setActive] = React.useState('');
-  const [selectedId, setSelectedId] = useState<string>();
+
+  const [tokenExists, setTokenExists] = useState(false);
+  
+  useEffect(() => {
+    if (!tokenExists) {
+      navigation.replace('SignIn');
+    }
+  }, [tokenExists, navigation])
+  
 
   const categories = [
     { id: 1, name: "Fiction" },
