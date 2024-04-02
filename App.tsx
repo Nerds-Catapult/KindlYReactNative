@@ -9,6 +9,7 @@ import * as FileSystem from "expo-file-system";
 
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
 import HomeScreen from "./screens/Home/HomeScreen";
+import BookDetailsScreen from "./screens/Book/BookDetailsScreen";
 import { Auth } from "./utils/access_authentication";
 
 const app = new Auth()
@@ -38,8 +39,16 @@ export default function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="BookdetailScreen"
+            component={BookDetailsScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
   );
 }
+

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { WebView, WebViewNavigation } from "react-native-webview";
-import { ScrollView, SafeAreaView, TouchableOpacity, View, BackHandler, StatusBar, Text, TextInput, FlatList } from 'react-native';
+import { ScrollView, SafeAreaView, TouchableOpacity, View, BackHandler, StatusBar, Text, TextInput, FlatList, GestureResponderEvent } from 'react-native';
 import { Chip, Drawer } from 'react-native-paper';
 
 
@@ -95,7 +95,7 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View className='ml-2'>
-              <TouchableOpacity className='w-[150px] h-[200px] rounded bg-gray-400'>
+              <TouchableOpacity onPress={()=>navigation.navigate("BookdetailScreen")} touchSoundDisabled className='w-[150px] h-[200px] rounded bg-gray-400'>
                 <View />
               </TouchableOpacity>
               <Text className='text-light text-sm'>Author</Text>
