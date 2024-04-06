@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native";
 import Login from "./screens/Auth/login/login";
 import Signup from "./screens/Auth/signup/signup";
-
+import SingleBookPage from "./screens/Book/BookDetailsScreen";
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
 import HomeScreen from "./screens/Home/HomeScreen";
 
@@ -32,6 +32,15 @@ export default function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="BookDetailScreen"
+            component={SingleBookPage}
+            options={{
+              headerShown: true,
+              title: "",
+            }}
+          />
+
           <Stack.Screen
             name="Login"
             component={Login}

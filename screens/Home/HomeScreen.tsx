@@ -13,11 +13,11 @@ import { Chip } from "react-native-paper";
 export default function HomeScreen() {
   const navigation = useNavigation() as any;
 
-  const [tokenExists, setTokenExists] = useState(false);
+  const [tokenExists, setTokenExists] = useState(true);
 
   useEffect(() => {
     if (!tokenExists) {
-      navigation.replace("SignIn");
+      navigation.replace("signup");
     }
   }, [tokenExists, navigation]);
 
@@ -53,7 +53,7 @@ export default function HomeScreen() {
   ];
 
   return (
-    <View className="w-full h-full">
+    <ScrollView className="w-full h-full">
       <View className="h-20 w-full flex flex-row justify-between items-center p-6">
         {/* Avatar */}
         <TouchableOpacity className="bg-purple-400 h-12 w-12 rounded-xl flex items-center justify-center">
@@ -117,7 +117,7 @@ export default function HomeScreen() {
           renderItem={({ item }) => (
             <View className="ml-2">
               <TouchableOpacity
-                onPress={() => navigation.navigate("BookdetailScreen")}
+                onPress={() => navigation.navigate("BookDetailScreen")}
                 touchSoundDisabled
                 className="w-[150px] h-[200px] rounded bg-gray-400"
               >
@@ -153,6 +153,6 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 20 }}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
