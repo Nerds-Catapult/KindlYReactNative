@@ -46,3 +46,26 @@ export interface SignupResponse {
   resMsg: string;
   result: Result
 }
+
+
+export interface signinRequest{
+    name: string;
+    email: string;
+    password: string;
+    phoneNumber: string;
+}
+
+export interface signinResponse{
+    token: string;
+    user: signinRequest
+}
+
+export interface signupRequest{
+    email: string;
+    password: string;
+}
+
+export interface signupResponse{
+    token: string;
+    user: signupRequest
+}

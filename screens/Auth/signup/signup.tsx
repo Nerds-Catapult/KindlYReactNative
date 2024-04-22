@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import Asyncstorage from "../../../logic/asyncstorage";
+
 
 const Signup = ({ navigation }: { navigation: any }) => {
   const [name, setName] = useState("");

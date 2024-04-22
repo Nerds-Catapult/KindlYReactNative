@@ -1,7 +1,38 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// This is a declaration file for the AsyncStorage module. It is used to provide type information for the module.
-declare module 'logic/asyncstorage' {
-    export function setItem(key: string, value: string): Promise<void>;
-    export function getItem(key: string): Promise<string | null>;
-    export function removeItem(key: string): Promise<void>;
+
+class AsyncStorageService{
+    private static instance: AsyncStorageService;
+
+    private constructor(){}
+
+    public static  getInstance(): AsyncStorageService{
+        if(!AsyncStorageService.instance){
+            AsyncStorageService.instance = new AsyncStorageService();
+        }
+        return AsyncStorageService.instance;
+    }
+    public writeAuthToken = async (token: string, tokenValue: string)=> {
+        try {
+            await AsyncStorage.setItem(token, tokenValue);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    public readAuthToken = async (token: string) => {
+        try {
+            return await AsyncStorage.getItem(token);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    public removeAuthToken = async (token: string) => {
+        try {
+            await AsyncStorage.removeItem(token);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
+
+export default AsyncStorageService.getInstance();
