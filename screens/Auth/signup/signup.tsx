@@ -12,7 +12,7 @@ const Signup = ({ navigation }: { navigation: any }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [tokenExists, setTokenExists] = useState(false);
+  const [tokenExists, setTokenExists] = useState(true);
 
   useEffect(() => {
     if (tokenExists) {

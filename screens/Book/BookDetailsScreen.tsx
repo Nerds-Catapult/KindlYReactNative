@@ -1,15 +1,17 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
-  TouchableOpacity,
   Pressable,
+  SafeAreaView,
   ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import image from "../../assets/splash_image.png";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
 interface Book {
   title: string;
   author: string;
@@ -22,67 +24,57 @@ const book: Book = {
   author: "Sample Author",
   coverImage: image,
   description:
-    "This is a sample book description.Certainly! In React Native, incorporating icons can enhance the visual appeal and functionality of your app. Let’s explore how to use icons in React Native: This is a sample book description.Certainly! In React Native, incorporating icons can enhance the visual appeal and functionality of your app. Let’s explore how to use icons in React Native:",
+    "This is a sample book description. Certainly! In React Native, incorporating icons can enhance the visual appeal and functionality of your app. Let's explore how to use icons in React Native: This is a sample book description. Certainly! In React Native, incorporating icons can enhance the visual appeal and functionality of your app. Let's explore how to use icons in React Native:",
 };
 
 const BookDetailsPage: React.FC<{ book: Book }> = ({ book }) => {
   return (
-    <ScrollView className=" h-full w-full">
+    <ScrollView style={styles.container}>
       <View>
-        <View>
-          <Image source={book.coverImage} style={styles.coverImage} />
-          <Text style={styles.title}>{book.title}</Text>
-          <Text style={styles.author}>{book.author}</Text>
-        </View>
-        <View style={styles.icons}>
-          <TouchableOpacity className=" text-center flex items-center">
-            <Ionicons name="star-half-outline" size={25} color="green" />
-            <Text className=" text-center font-medium pt-2 text-base text-green-700">
-              4.6
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity className=" text-center flex items-center">
-            <Ionicons name="book-outline" size={25} color="green" />
-            <Text className=" text-center font-medium pt-2 text-sm text-green-700">
-              320
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity className=" text-center flex items-center">
-            <Ionicons name="language-outline" size={25} color="green" />
-            <Text className=" text-center font-medium pt-2 text-xs text-green-700">
-              English
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <Image source={book.coverImage} style={styles.coverImage} />
+        <Text style={styles.title}>{book.title}</Text>
+        <Text style={styles.author}>{book.author}</Text>
       </View>
-      <View className=" bg-gray-300 py-4 px-6 rounded-t-3xl mt-4 h-full ">
-        <Text className=" first-letter:uppercase pb-4 text-xl font-bold text-green-900">
-          Description :
-        </Text>
+      <View style={styles.icons}>
+        <TouchableOpacity style={styles.iconContainer}>
+          <Ionicons name="star-half-outline" size={25} color="green" />
+          <Text style={styles.iconText}>4.6</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconContainer}>
+          <Ionicons name="book-outline" size={25} color="green" />
+          <Text style={styles.iconText}>320</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconContainer}>
+          <Ionicons name="language-outline" size={25} color="green" />
+          <Text style={styles.iconText}>English</Text>
+        </TouchableOpacity>
+      </View>
+      <SafeAreaView style={styles.descriptionCard}>
+        <Text style={styles.descriptionTitle}>Description:</Text>
         <Text style={styles.description}>{book.description}</Text>
-      </View>
-      <View className=" absolute bottom-0 z-100 left-0  w-full justify-evenly pb-6 px-3 flex flex-row !bg-gradient-to-b from-indigo-500 ... ">
-        <Pressable className=" bg-green-600 py-3 w-1/2 rounded-full">
-          <Text className=" text-center text-white font-semibold text-base">
-            Read Now
-          </Text>
-        </Pressable>
-        <Pressable className=" bg-white opacity-80 border border-green-500 px-10 py-3 rounded-full">
-          <Text className=" text-center text-green-500 font-semibold text-base">
-            Save
-          </Text>
-        </Pressable>
-      </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button} onPress={() => console.log("Read Book")}>
+            <Text style={styles.buttonText}>Read Book</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => console.log("Add to Library")}>
+            <Text style={styles.buttonText}>Add to Library</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   coverImage: {
-    width: "auto",
+    width: "100%",
     height: 300,
-    objectFit: "cover",
-    marginBottom: 0,
+    resizeMode: "cover",
+    marginBottom: 10,
   },
   title: {
     fontSize: 24,
@@ -92,25 +84,61 @@ const styles = StyleSheet.create({
   },
   author: {
     fontSize: 18,
-    margin: 5,
+    marginBottom: 10,
     textAlign: "center",
+  },
+  icons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingVertical: 10,
+  },
+  iconContainer: {
+    alignItems: "center",
+  },
+  iconText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: 5,
+    color: "green",
+  },
+  descriptionCard: {
+    backgroundColor: "#f5f5f5",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: 20,
+  },
+  descriptionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
   },
   description: {
     fontSize: 16,
-    textAlign: "left",
-    lineHeight: 23,
-    letterSpacing: 0.3,
+    lineHeight: 24,
+    marginBottom: 20,
+    color: "#666",
   },
-  icons: {
-    display: "flex",
+  buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 10,
-    alignItems: "center",
-    textAlign: "center",
+    justifyContent: "space-between",
   },
-  descriptioncard: {
-    backgroundColor: "lightblue",
+  button: {
+    backgroundColor: "green",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
