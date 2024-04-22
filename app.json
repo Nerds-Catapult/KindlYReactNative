@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/splash_image.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.kndly"
