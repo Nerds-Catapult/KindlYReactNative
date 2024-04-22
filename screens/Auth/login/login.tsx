@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 const Login = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [tokenExists, setTokenExists] = useState(false);
+  const [tokenExists, setTokenExists] = useState(true);
 
   useEffect(() => {
     if (tokenExists) {

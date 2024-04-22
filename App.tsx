@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     //@ts-ignore
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 pt-9">
       <StatusBar animated={true} backgroundColor="#61dafb" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Welcome">

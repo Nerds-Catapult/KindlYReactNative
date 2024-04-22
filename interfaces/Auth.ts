@@ -46,4 +46,3 @@ export interface SignupResponse {
   resMsg: string;
   result: Result
 }
-
