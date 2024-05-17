@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
 
-const LoadingComponent = ({ visible = false }) => {
+interface loadingComponentProps {
+  visible: boolean;
+}
+
+const LoadingComponent = ({ visible}: loadingComponentProps) => {
   if (!visible) {
     return null;
   }

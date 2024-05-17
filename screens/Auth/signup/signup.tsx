@@ -1,43 +1,107 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import Asyncstorage from "../../../logic/asyncstorage";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { AuthContext } from "../../../logic/context";
+import LoadingComponent from "../../Loading/Loading";
+import { toast, Toasts } from '@backpackapp-io/react-native-toast';
+import axios from "axios";
+
+
+interface expectedJson{
+  status: number,
+  message: string,
+  isAuthenticated: boolean,
+  token: string
+  data: {
+    id: string,
+    name: string,
+    email: string,
+    phone: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null
+}
+
+
+
 
 
 const Signup = ({ navigation }: { navigation: any }) => {
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [tokenExists, setTokenExists] = useState(true);
+  const [fullName, setName] = useState("john doe");
+  const [phoneNumber, setPhoneNumber] = useState("1234567890");
+  const [email, setEmail] = useState("johndoe@gmail.com");
+  const [password, setPassword] = useState("password");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [auth, setisAuth] = useState<boolean>(false);
+  const { login, authToken } = React.useContext(AuthContext);
 
-  useEffect(() => {
-    if (tokenExists) {
-      navigation.replace("Home");
+  const handleSignup = async () => {
+    if (!fullName || !phoneNumber || !email || !password) {
+      toast("All fields are required");
+      return;
     }
-  }, [tokenExists, navigation]);
-
-  const handleSignup = () => {
-    console.log("Name:", name);
-    console.log("Phone Number:", phoneNumber);
-    console.log("Email:", email);
-    console.log("Password:", password);
-
-    setTokenExists(true);
+    try {
+      setLoading(true);
+      const response = await  fetch("https://1a8d-197-248-63-165.ngrok-free.app/api/create-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName,
+          phoneNumber,
+          email,
+          password,
+        }),
+      })
+      const data: expectedJson = await response.json();
+      if (data.status !== 201) {
+        toast(data.message);
+        return;
+      } else {
+        login(data.token);
+        setisAuth(true);
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.error(error);
+      toast("An error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
+  const checkAuth = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("https://1a8d-197-248-63-165.ngrok-free.app/api/auth", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      const data: expectedJson = response.data;
+      if (data.isAuthenticated) {
+        setisAuth(true);
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+
+  const signup = () => (
     <View style={styles.container}>
       <Text style={styles.title}>Signup</Text>
       <TextInput
         style={styles.input}
-        placeholder="Name"
-        value={name}
+        placeholder="Full Name"
+        value={fullName}
         onChangeText={(text) => setName(text)}
       />
       <TextInput
@@ -64,16 +128,27 @@ const Signup = ({ navigation }: { navigation: any }) => {
       <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Signup</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={styles.loginOption}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => handleSignup}
       >
         <Text>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
+
+  return (
+    <>
+      <LoadingComponent visible={loading} />
+      {!loading && signup()}
+      <Toasts/>
+    </>
+  );
 };
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {

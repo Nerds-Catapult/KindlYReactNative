@@ -8,16 +8,15 @@ import Signup from "./screens/Auth/signup/signup";
 import SingleBookPage from "./screens/Book/BookDetailsScreen";
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
 import HomeScreen from "./screens/Home/HomeScreen";
-import {Provider} from "react-redux";
-import {Store} from "./store/store";
+import { AuthProvider } from "./logic/context";
 
 const Stack = createStackNavigator();
 
 export default function App() {
     return (
         //@ts-ignore
-        <SafeAreaView className="flex-1 pt-9">
-            <Provider store={Store}>
+        <AuthProvider>
+            <SafeAreaView className="flex-1 pt-9">
                 <StatusBar animated={true} backgroundColor="#61dafb"/>
                 <NavigationContainer>
                     <Stack.Navigator initialRouteName="Welcome">
@@ -60,7 +59,7 @@ export default function App() {
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
-            </Provider>
         </SafeAreaView>
+        </AuthProvider>
     );
 }

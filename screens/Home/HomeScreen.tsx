@@ -9,17 +9,26 @@ import {
   FlatList,
 } from "react-native";
 import { Chip } from "react-native-paper";
+import  {BackHandler} from 'react-native';
+
+
 
 export default function HomeScreen() {
   const navigation = useNavigation() as any;
 
-  const [tokenExists, setTokenExists] = useState(true);
-
   useEffect(() => {
-    if (!tokenExists) {
-      navigation.replace("signup");
-    }
-  }, [tokenExists, navigation]);
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const categories = [
     { id: 1, name: "Fiction" },
@@ -60,7 +69,7 @@ export default function HomeScreen() {
           <Text className="text-purple-800 text-xl font-bold">S</Text>
         </TouchableOpacity>
         <Text className="text-[#1C122D] text-serif text-2xl font-bold">
-          Kndly
+          Sasha Readers
         </Text>
         {/* TODO: Add a drawer overlay on this button press */}
         <TouchableOpacity>
@@ -72,7 +81,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
       <View className="w-full h-40 flex flex-col items-start p-4 space-y-4 mt-10">
-        <Text className="text-2xl font-bold font-serif tracking-wider">
+        <Text className="text-2xl font-bold  tracking-wider">
           Cycle through our library
         </Text>
         <View className="w-full flex flex-row items-center justify-between space-x-2">
