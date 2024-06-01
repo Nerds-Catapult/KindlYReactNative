@@ -20,23 +20,29 @@ const useAuth = () => {
     }, []);
 
     const signIn = async (data: signinRequest) => {
-        try {
-            const response = await axios.post<signinResponse>("https://reqres.in/api/login", data);
-            setToken(response.data.token);
-            await Asyncstorage.writeAuthToken("token", response.data.token);
-        } catch (error) {
-            console.log(error);
-        }
+      try {
+        const response = await axios.post<signinResponse>(
+          "https://just-actually-ape.ngrok-free.app/api/login",
+          data
+        );
+        setToken(response.data.token);
+        await Asyncstorage.writeAuthToken("token", response.data.token);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     const signUp = async (data: signupRequest) => {
-        try {
-            const response = await axios.post<signupResponse>("https://reqres.in/api/register", data);
-            setToken(response.data.token);
-            await Asyncstorage.writeAuthToken("token", response.data.token);
-        } catch (error) {
-            console.log(error);
-        }
+      try {
+        const response = await axios.post<signupResponse>(
+          "https://just-actually-ape.ngrok-free.app/api/register",
+          data
+        );
+        setToken(response.data.token);
+        await Asyncstorage.writeAuthToken("token", response.data.token);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     const signOut = async () => {

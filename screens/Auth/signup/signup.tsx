@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { AuthContext } from "../../../logic/context";
 import LoadingComponent from "../../Loading/Loading";
-import { toast, Toasts } from '@backpackapp-io/react-native-toast';
-import axios from "axios";
-
-
-interface expectedJson{
-  status: number,
-  message: string,
-  isAuthenticated: boolean,
-  token: string
-  data: {
-    id: string,
-    name: string,
-    email: string,
-    phone: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null
-}
-
-
+import { toast, Toasts } from "@backpackapp-io/react-native-toast";
+import { expectedJson } from "../../../interfaces/types";
 
 
 
@@ -31,8 +19,32 @@ const Signup = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState("johndoe@gmail.com");
   const [password, setPassword] = useState("password");
   const [loading, setLoading] = useState<boolean>(false);
-  const [auth, setisAuth] = useState<boolean>(false);
   const { login, authToken } = React.useContext(AuthContext);
+
+  const checkAuth = async () => {
+    try {
+      setLoading(true);
+      if (authToken == null) {
+        return;
+      }
+      const response = await fetch(
+        "https://just-actually-ape.ngrok-free.app/api/auth",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      const data: expectedJson = await response.json();
+      if (data.isAuthenticated) {
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSignup = async () => {
     if (!fullName || !phoneNumber || !email || !password) {
@@ -41,25 +53,27 @@ const Signup = ({ navigation }: { navigation: any }) => {
     }
     try {
       setLoading(true);
-      const response = await  fetch("https://1a8d-197-248-63-165.ngrok-free.app/api/create-user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullName,
-          phoneNumber,
-          email,
-          password,
-        }),
-      })
+      const response = await fetch(
+        "https://just-actually-ape.ngrok-free.app/api/create-user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullName,
+            phoneNumber,
+            email,
+            password,
+          }),
+        }
+      );
       const data: expectedJson = await response.json();
       if (data.status !== 201) {
         toast(data.message);
         return;
       } else {
-        login(data.token);
-        setisAuth(true);
+        data.token && login(data.token);
         navigation.navigate("Home");
       }
     } catch (error) {
@@ -70,30 +84,9 @@ const Signup = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  const checkAuth = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("https://1a8d-197-248-63-165.ngrok-free.app/api/auth", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      const data: expectedJson = response.data;
-      if (data.isAuthenticated) {
-        setisAuth(true);
-        navigation.navigate("Home");
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     checkAuth();
   }, []);
-
 
   const signup = () => (
     <View style={styles.container}>
@@ -130,7 +123,7 @@ const Signup = ({ navigation }: { navigation: any }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.loginOption}
-        onPress={() => handleSignup}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text>Already have an account? Login</Text>
       </TouchableOpacity>
@@ -141,14 +134,10 @@ const Signup = ({ navigation }: { navigation: any }) => {
     <>
       <LoadingComponent visible={loading} />
       {!loading && signup()}
-      <Toasts/>
+      <Toasts />
     </>
   );
 };
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
