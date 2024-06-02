@@ -14,3 +14,15 @@ export interface expectedJson {
         updatedAt: string;
     } | null;
 }
+
+
+
+export interface expectedCategory{
+    status: number;
+    categories: {
+        id: number;
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+    }[];
+}

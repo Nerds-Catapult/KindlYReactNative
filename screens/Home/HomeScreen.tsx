@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Chip } from "react-native-paper";
 import { BackHandler } from "react-native";
+import { expectedCategory } from "../../interfaces/types";
 
 export default function HomeScreen() {
   const navigation = useNavigation() as any;
@@ -20,13 +21,16 @@ export default function HomeScreen() {
     new Animated.Value(-Dimensions.get("window").width)
   ).current;
   const sidebarWidth = useRef(Dimensions.get("window").width).current;
+  const [categories, setCategories] = useState<expectedCategory>({
+    status: 0,
+    categories: [],
+  });
 
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp();
       return true;
     };
-
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
@@ -35,11 +39,16 @@ export default function HomeScreen() {
     return () => backHandler.remove();
   }, []);
 
-  const categories = [
-    { id: 1, name: "Fiction" },
-    { id: 2, name: "Non-fiction" },
-    // ... rest of the categories
-  ];
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch(
+        "https://just-actually-ape.ngrok-free.app/api/categories"
+      );
+      const data: expectedCategory = await response.json();
+      data && setCategories(data);
+    };
+    fetchCategories();
+  }, []);
 
   const books = [
     { id: 1, title: "Book 1" },
@@ -81,11 +90,10 @@ export default function HomeScreen() {
         className="h-full w-3/4 bg-white shadow-lg z-50 rounded-r-xl overflow-x-auto"
       >
         {/* Sidebar content */}
-        <ScrollView className="h-20 w-full  p-6">    
+        <ScrollView className="h-20 w-full  p-6">
           <TouchableOpacity className="bg-purple-400 h-12 w-12 rounded-xl flex items-center justify-center">
             <Text className="text-purple-800 text-xl font-bold">S</Text>
           </TouchableOpacity>
-
 
           <View className="py-4 px-4 mt-11">
             <TouchableOpacity className="bg-purple-500 rounded-md ">
@@ -124,7 +132,6 @@ export default function HomeScreen() {
         <TouchableOpacity className="h-20 w-full bg-purple-400 flex items-center justify-center">
           <Text className="text-white text-xl font-bold">Logout</Text>
         </TouchableOpacity>
-
       </Animated.View>
     );
   };
@@ -180,7 +187,7 @@ export default function HomeScreen() {
           </View>
           <ScrollView horizontal>
             <View className="flex flex-row space-x-2 h-12 items-center">
-              {categories.map((category, index) => (
+              {categories.categories.map((category) => (
                 <Chip
                   key={category.id}
                   className="bg-gray-100"

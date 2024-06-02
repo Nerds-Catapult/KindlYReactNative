@@ -35,10 +35,10 @@ export default function WelcomeScreen() {
     }
   }
 
+  
   useEffect(() => {
     authProtocol();
-  }
-  , []);
+  }, []);
 
   return (
     <>
