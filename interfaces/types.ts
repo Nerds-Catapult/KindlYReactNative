@@ -26,3 +26,18 @@ export interface expectedCategory{
         updatedAt: string;
     }[];
 }
+
+
+export interface expectedBook{
+    message: string;
+    status: number;
+    books: {
+        id: number;
+        title: string;
+        author: string;
+        category: string;
+        description: string;
+        coverImage: string;
+        contentSrc: string;
+    }[]
+}

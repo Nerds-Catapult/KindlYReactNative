@@ -9,72 +9,116 @@ import {
   FlatList,
   Animated,
   Dimensions,
+  Image
 } from "react-native";
 import { Chip } from "react-native-paper";
 import { BackHandler } from "react-native";
 import { expectedCategory } from "../../interfaces/types";
+import { AuthContext } from "../../logic/context";
+import { expectedJson } from "../../interfaces/types";
+import { toast, Toasts } from "@backpackapp-io/react-native-toast";
+import { expectedBook } from "../../interfaces/types";
 
 export default function HomeScreen() {
-  const navigation = useNavigation() as any;
-  const [showOptions, setShowOptions] = useState<boolean>(false);
-  const sidebarPosition = useRef(
-    new Animated.Value(-Dimensions.get("window").width)
-  ).current;
-  const sidebarWidth = useRef(Dimensions.get("window").width).current;
-  const [categories, setCategories] = useState<expectedCategory>({
-    status: 0,
-    categories: [],
-  });
+ const navigation = useNavigation() as any;
+ const { authToken } = React.useContext(AuthContext);
+ const [showOptions, setShowOptions] = useState<boolean>(false);
+ const sidebarPosition = useRef(
+   new Animated.Value(-Dimensions.get("window").width)
+ ).current;
+ const sidebarWidth = useRef(Dimensions.get("window").width).current;
+ const [categories, setCategories] = useState<expectedCategory>({
+   status: 0,
+   categories: [],
+ });
+ const [books, setBooks] = useState<expectedBook>({
+   message: "",
+   status: 0,
+   books: [],
+ });
 
-  useEffect(() => {
-    const backAction = () => {
-      BackHandler.exitApp();
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+ useEffect(() => {
+   const checkAuth = async () => {
+     try {
+       if (authToken == null) {
+         return;
+       }
+       const response = await fetch(
+         "https://just-actually-ape.ngrok-free.app/api/auth",
+         {
+           headers: {
+             Authorization: `Bearer ${authToken}`,
+           },
+         }
+       );
+       const data: expectedJson = await response.json();
+       if (data.isAuthenticated) {
+         navigation.navigate("Home");
+       }
+     } catch (error) {
+       console.error(error);
+     }
+   };
+   checkAuth();
+ }, []);
 
-    return () => backHandler.remove();
-  }, []);
+ useEffect(() => {
+   const backAction = () => {
+     BackHandler.exitApp();
+     return true;
+   };
+   const backHandler = BackHandler.addEventListener(
+     "hardwareBackPress",
+     backAction
+   );
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/categories"
-      );
-      const data: expectedCategory = await response.json();
-      data && setCategories(data);
-    };
-    fetchCategories();
-  }, []);
+   return () => backHandler.remove();
+ }, []);
 
-  const books = [
-    { id: 1, title: "Book 1" },
-    { id: 2, title: "Book 2" },
-    // ... rest of the books
-  ];
+ useEffect(() => {
+   const fetchCategories = async () => {
+     const response = await fetch(
+       "https://just-actually-ape.ngrok-free.app/api/categories"
+     );
+     const data: expectedCategory = await response.json();
+     data && setCategories(data);
+   };
+   fetchCategories();
+ }, []);
 
-  const toggleSidebar = () => {
-    if (showOptions) {
-      Animated.timing(sidebarPosition, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(sidebarPosition, {
-        toValue: -sidebarWidth,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  };
+ useEffect(() => {
+   toggleSidebar();
+ }, [showOptions]);
 
-  useEffect(() => {
-    toggleSidebar();
-  }, [showOptions]);
+ useEffect(() => {
+   const fetchBooks = async () => {
+     const response = await fetch(
+       "https://just-actually-ape.ngrok-free.app/api/books"
+     );
+     const data: expectedBook = await response.json();
+     data && setBooks(data);
+   };
+   fetchBooks();
+ }, []);
+
+ const toggleSidebar = () => {
+   if (showOptions) {
+     Animated.timing(sidebarPosition, {
+       toValue: 0,
+       duration: 300,
+       useNativeDriver: true,
+     }).start();
+   } else {
+     Animated.timing(sidebarPosition, {
+       toValue: -sidebarWidth,
+       duration: 300,
+       useNativeDriver: true,
+     }).start();
+   }
+ };
+   const filteredBooks = books.books.filter(
+     (book) => book.contentSrc && book.coverImage
+   );
 
   const Sidebar = () => {
     return (
@@ -140,7 +184,6 @@ export default function HomeScreen() {
     <View style={{ flex: 1 }}>
       <ScrollView className="w-full h-full">
         <View className="h-20 w-full flex flex-row justify-between items-center p-6">
-          {/* Avatar */}
           <TouchableOpacity className="bg-purple-400 h-12 w-12 rounded-xl flex items-center justify-center">
             <Text className="text-purple-800 text-xl font-bold">S</Text>
           </TouchableOpacity>
@@ -201,30 +244,45 @@ export default function HomeScreen() {
               ))}
             </View>
           </ScrollView>
-
-          <FlatList
-            horizontal
-            data={books}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <View className="ml-2">
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("BookDetailScreen")}
-                  touchSoundDisabled
-                  className="w-[150px] h-[200px] rounded bg-gray-400"
-                >
-                  <View />
-                </TouchableOpacity>
-                <Text className="text-light text-sm">Author</Text>
-                <Text className="font-bold tracking-widest text-lg">Title</Text>
-              </View>
-            )}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingHorizontal: 10,
-              paddingVertical: 20,
-            }}
-          />
+          {filteredBooks.length > 0 ? (
+            <FlatList
+              horizontal
+              data={filteredBooks}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View className="ml-2">
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("BookDetailScreen", {
+                        bookId: item.id,
+                      })
+                    }
+                    touchSoundDisabled
+                    className="w-[150px] h-[200px] rounded"
+                  >
+                    <Image
+                      source={{ uri: item.coverImage }}
+                      className="w-full h-full rounded"
+                      resizeMode="cover"
+                    />
+                  </TouchableOpacity>
+                  <Text className="text-light text-sm">{item.author}</Text>
+                  <Text className="font-bold tracking-widest text-lg">
+                    {item.title}
+                  </Text>
+                </View>
+              )}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+                paddingVertical: 20,
+              }}
+            />
+          ) : (
+            <View className="flex items-center justify-center py-10">
+              <Text className="text-gray-500 text-lg">No books available</Text>
+            </View>
+          )}
 
           <View className="h-10 w-full flex flex-row justify-between items-center px-4">
             <Text className="font-bold text-lg underline">Top Authors</Text>
@@ -232,27 +290,62 @@ export default function HomeScreen() {
               View More &rarr;
             </Text>
           </View>
-          <FlatList
-            horizontal
-            data={books}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <View className="ml-2">
-                <TouchableOpacity className="w-20 h-20 rounded-full bg-gray-400">
-                  <View />
-                </TouchableOpacity>
-                <Text className="text-light text-sm">Author</Text>
-              </View>
-            )}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingHorizontal: 10,
-              paddingVertical: 20,
-            }}
-          />
+
+          {filteredBooks.length > 0 ? (
+            <FlatList
+              horizontal
+              data={filteredBooks}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View className="ml-2">
+                  <TouchableOpacity className="w-20 h-20 rounded-full">
+                    <Image
+                      source={{ uri: item.coverImage }}
+                      className="w-full h-full rounded-full"
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                  <Text className="text-light text-sm">{item.author}</Text>
+                </View>
+              )}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+                paddingVertical: 20,
+              }}
+            />
+          ) : null}
+
+          <View className="h-10 w-full flex flex-row justify-between items-center px-4">
+            <Text className="font-bold text-lg underline">Top Authors</Text>
+            <Text className="font-bold text-purple-800 text-sm underline">
+              View More &rarr;
+            </Text>
+          </View>
+          {filteredBooks.length > 0 ? (
+            <FlatList
+              horizontal
+              data={filteredBooks}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View className="ml-2">
+                  <TouchableOpacity className="w-20 h-20 rounded-full bg-gray-400">
+                    <View />
+                  </TouchableOpacity>
+                  <Text className="text-light text-sm">Author</Text>
+                </View>
+              )}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+                paddingVertical: 20,
+              }}
+            />
+          ) : null}
         </View>
       </ScrollView>
       <Sidebar />
+      <Toasts />
     </View>
   );
 }
