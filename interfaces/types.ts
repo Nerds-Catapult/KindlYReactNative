@@ -41,3 +41,17 @@ export interface expectedBook{
         contentSrc: string;
     }[]
 }
+
+export interface expectedAuthor{
+    status: number;
+    author: {
+        id: number;
+        fullName: string;
+        phoneNumber: string;
+        email: string;
+        Bio: string;
+        avatar: string;
+        createdAt: string;
+        updatedAt: string;
+    }[]
+}

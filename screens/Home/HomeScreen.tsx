@@ -9,116 +9,138 @@ import {
   FlatList,
   Animated,
   Dimensions,
-  Image
+  Image,
 } from "react-native";
 import { Chip } from "react-native-paper";
 import { BackHandler } from "react-native";
-import { expectedCategory } from "../../interfaces/types";
 import { AuthContext } from "../../logic/context";
-import { expectedJson } from "../../interfaces/types";
+import {
+  expectedJson,
+  expectedAuthor,
+  expectedBook,
+  expectedCategory,
+} from "../../interfaces/types";
 import { toast, Toasts } from "@backpackapp-io/react-native-toast";
-import { expectedBook } from "../../interfaces/types";
 
 export default function HomeScreen() {
- const navigation = useNavigation() as any;
- const { authToken } = React.useContext(AuthContext);
- const [showOptions, setShowOptions] = useState<boolean>(false);
- const sidebarPosition = useRef(
-   new Animated.Value(-Dimensions.get("window").width)
- ).current;
- const sidebarWidth = useRef(Dimensions.get("window").width).current;
- const [categories, setCategories] = useState<expectedCategory>({
-   status: 0,
-   categories: [],
- });
- const [books, setBooks] = useState<expectedBook>({
-   message: "",
-   status: 0,
-   books: [],
- });
+  const navigation = useNavigation() as any;
+  const { authToken } = React.useContext(AuthContext);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const sidebarPosition = useRef(
+    new Animated.Value(-Dimensions.get("window").width)
+  ).current;
+  const sidebarWidth = useRef(Dimensions.get("window").width).current;
+  const [categories, setCategories] = useState<expectedCategory>({
+    status: 0,
+    categories: [],
+  });
+  const [books, setBooks] = useState<expectedBook>({
+    message: "",
+    status: 0,
+    books: [],
+  });
+  const [authors, setAuthors] = useState<expectedAuthor>({
+    status: 0,
+    author: [],
+  });
 
- useEffect(() => {
-   const checkAuth = async () => {
-     try {
-       if (authToken == null) {
-         return;
-       }
-       const response = await fetch(
-         "https://just-actually-ape.ngrok-free.app/api/auth",
-         {
-           headers: {
-             Authorization: `Bearer ${authToken}`,
-           },
-         }
-       );
-       const data: expectedJson = await response.json();
-       if (data.isAuthenticated) {
-         navigation.navigate("Home");
-       }
-     } catch (error) {
-       console.error(error);
-     }
-   };
-   checkAuth();
- }, []);
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        if (authToken == null) {
+          return;
+        }
+        const response = await fetch(
+          "https://just-actually-ape.ngrok-free.app/api/auth",
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        const data: expectedJson = await response.json();
+        if (data.isAuthenticated) {
+          navigation.navigate("Home");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    checkAuth();
+  }, []);
 
- useEffect(() => {
-   const backAction = () => {
-     BackHandler.exitApp();
-     return true;
-   };
-   const backHandler = BackHandler.addEventListener(
-     "hardwareBackPress",
-     backAction
-   );
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
 
-   return () => backHandler.remove();
- }, []);
+    return () => backHandler.remove();
+  }, []);
 
- useEffect(() => {
-   const fetchCategories = async () => {
-     const response = await fetch(
-       "https://just-actually-ape.ngrok-free.app/api/categories"
-     );
-     const data: expectedCategory = await response.json();
-     data && setCategories(data);
-   };
-   fetchCategories();
- }, []);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch(
+        "https://just-actually-ape.ngrok-free.app/api/categories"
+      );
+      const data: expectedCategory = await response.json();
+      data && setCategories(data);
+    };
+    fetchCategories();
+  }, []);
 
- useEffect(() => {
-   toggleSidebar();
- }, [showOptions]);
+  useEffect(() => {
+    toggleSidebar();
+  }, [showOptions]);
 
- useEffect(() => {
-   const fetchBooks = async () => {
-     const response = await fetch(
-       "https://just-actually-ape.ngrok-free.app/api/books"
-     );
-     const data: expectedBook = await response.json();
-     data && setBooks(data);
-   };
-   fetchBooks();
- }, []);
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const response = await fetch(
+        "https://just-actually-ape.ngrok-free.app/api/books"
+      );
+      const data: expectedBook = await response.json();
+      data && setBooks(data);
+    };
+    fetchBooks();
+  }, []);
 
- const toggleSidebar = () => {
-   if (showOptions) {
-     Animated.timing(sidebarPosition, {
-       toValue: 0,
-       duration: 300,
-       useNativeDriver: true,
-     }).start();
-   } else {
-     Animated.timing(sidebarPosition, {
-       toValue: -sidebarWidth,
-       duration: 300,
-       useNativeDriver: true,
-     }).start();
-   }
- };
-   const filteredBooks = books.books.filter(
-     (book) => book.contentSrc && book.coverImage
-   );
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      const response = await fetch(
+        "https://just-actually-ape.ngrok-free.app/api/authors"
+      );
+      const data: expectedAuthor = await response.json();
+      data && setAuthors(data);
+    };
+    fetchAuthors();
+  }, []);
+
+  const toggleSidebar = () => {
+    if (showOptions) {
+      Animated.timing(sidebarPosition, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(sidebarPosition, {
+        toValue: -sidebarWidth,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+  const filteredBooks = books?.books?.filter(
+    (book) => book.contentSrc && book.coverImage
+  );
+
+  const filteredAuthors = authors?.author?.filter(
+    (author) => author.avatar && author.fullName
+  );
 
   const Sidebar = () => {
     return (
@@ -244,7 +266,7 @@ export default function HomeScreen() {
               ))}
             </View>
           </ScrollView>
-          {filteredBooks.length > 0 ? (
+          {filteredBooks?.length > 0 ? (
             <FlatList
               horizontal
               data={filteredBooks}
@@ -287,52 +309,27 @@ export default function HomeScreen() {
           <View className="h-10 w-full flex flex-row justify-between items-center px-4">
             <Text className="font-bold text-lg underline">Top Authors</Text>
             <Text className="font-bold text-purple-800 text-sm underline">
-              View More &rarr;
+              {/* View More &rarr; */}
             </Text>
           </View>
 
-          {filteredBooks.length > 0 ? (
+          {filteredAuthors?.length > 0 ? (
             <FlatList
               horizontal
-              data={filteredBooks}
+              data={filteredAuthors}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <View className="ml-2">
-                  <TouchableOpacity className="w-20 h-20 rounded-full">
+                <View className="ml-2 mt-8">
+                  <TouchableOpacity className="w-[100px] h-[100px] rounded-full ">
                     <Image
-                      source={{ uri: item.coverImage }}
+                      source={{
+                        uri: "https://res.cloudinary.com/ddpwdhkuh/image/upload/v1717594217/maxresdefault_qjxl2j.jpg",
+                      }}
                       className="w-full h-full rounded-full"
-                      resizeMode="contain"
+                      resizeMode="cover"
                     />
                   </TouchableOpacity>
-                  <Text className="text-light text-sm">{item.author}</Text>
-                </View>
-              )}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                paddingHorizontal: 10,
-                paddingVertical: 20,
-              }}
-            />
-          ) : null}
-
-          <View className="h-10 w-full flex flex-row justify-between items-center px-4">
-            <Text className="font-bold text-lg underline">Top Authors</Text>
-            <Text className="font-bold text-purple-800 text-sm underline">
-              View More &rarr;
-            </Text>
-          </View>
-          {filteredBooks.length > 0 ? (
-            <FlatList
-              horizontal
-              data={filteredBooks}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <View className="ml-2">
-                  <TouchableOpacity className="w-20 h-20 rounded-full bg-gray-400">
-                    <View />
-                  </TouchableOpacity>
-                  <Text className="text-light text-sm">Author</Text>
+                  <Text className="text-light text-sm">{item.fullName}</Text>
                 </View>
               )}
               showsHorizontalScrollIndicator={false}

@@ -10,33 +10,34 @@ export default function WelcomeScreen() {
   const { authToken } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  async function authProtocol() {
-    try {
-      setLoading(true);
-      if (authToken == null) {
-        return;
-      }
-      const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/auth",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-      const data: expectedJson = await response.json();
-      if (data.isAuthenticated) {
-        navigation.navigate("Home");
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  
 
   
   useEffect(() => {
+    async function authProtocol() {
+      try {
+        setLoading(true);
+        if (authToken == null) {
+          return;
+        }
+        const response = await fetch(
+          "https://just-actually-ape.ngrok-free.app/api/auth",
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        const data: expectedJson = await response.json();
+        if (data.isAuthenticated) {
+          navigation.navigate("Home");
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
     authProtocol();
   }, []);
 
