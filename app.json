@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Kndly",
-    "slug": "Kndly",
+    "slug": "sasha-reads",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,6 +30,12 @@
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4d22516e-b22d-4049-9d26-8ea5a1aae770"
+      }
+    },
+    "owner": "nerds-catapult"
   }
 }
