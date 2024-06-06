@@ -12,6 +12,8 @@ import {
 import image from "../../assets/splash_image.png";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+
+
 interface Book {
   title: string;
   author: string;
@@ -28,10 +30,11 @@ const book: Book = {
 };
 
 const BookDetailsPage: React.FC<{ book: Book }> = ({ book }) => {
+  
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Image source={book.coverImage} style={styles.coverImage} />
+        <Image src={book.coverImage} style={styles.coverImage} />
         <Text style={styles.title}>{book.title}</Text>
         <Text style={styles.author}>{book.author}</Text>
       </View>

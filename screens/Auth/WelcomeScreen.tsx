@@ -5,11 +5,16 @@ import { AuthContext } from "../../logic/context";
 import LoadingComponent from "../Loading/Loading";
 import { expectedJson } from "../../interfaces/types";
 
+
+
+
 export default function WelcomeScreen() {
   const navigation = useNavigation() as any;
   const { authToken } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState<boolean>(false);
 
+
+  
   
 
   

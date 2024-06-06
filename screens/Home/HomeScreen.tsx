@@ -4,7 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
-  Text,
+  Text, 
   TextInput,
   FlatList,
   Animated,
@@ -21,6 +21,8 @@ import {
   expectedCategory,
 } from "../../interfaces/types";
 import { toast, Toasts } from "@backpackapp-io/react-native-toast";
+import { useDispatch } from "react-redux";
+import {setBook} from '../../reducers/bookReducers';
 
 export default function HomeScreen() {
   const navigation = useNavigation() as any;
@@ -43,6 +45,12 @@ export default function HomeScreen() {
     status: 0,
     author: [],
   });
+
+  const dispatch = useDispatch();
+
+  const selectBookToDisplay = (bookId: number) => {
+    navigation.navigate("BookDetailScreen", { bookId });
+  }
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -274,11 +282,7 @@ export default function HomeScreen() {
               renderItem={({ item }) => (
                 <View className="ml-2">
                   <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("BookDetailScreen", {
-                        bookId: item.id,
-                      })
-                    }
+                    onPress={() =>selectBookToDisplay(item.id)}
                     touchSoundDisabled
                     className="w-[150px] h-[200px] rounded"
                   >
