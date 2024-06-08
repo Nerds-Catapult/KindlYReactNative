@@ -39,6 +39,7 @@ export interface expectedBook{
         description: string;
         coverImage: string;
         contentSrc: string;
+        price: number;
     }[]
 }
 
@@ -54,4 +55,18 @@ export interface expectedAuthor{
         createdAt: string;
         updatedAt: string;
     }[]
+}
+
+
+
+export type RootStackParamList = {
+    Welcome: undefined;
+    BookScreen: { bookId: number };
+    Home: undefined;
+    Login: undefined;
+    signup: undefined;
+    BookDetailScreen: { bookId: number}
+    CategoryScreen: undefined;
+    AuthorScreen: undefined;
+    ReadingScreen: { bookId: number}
 }

@@ -5,14 +5,17 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native";
 import Login from "./screens/Auth/login/login";
 import Signup from "./screens/Auth/signup/signup";
-import SingleBookPage from "./screens/Book/BookDetailsScreen";
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
+import ReadingScreen from "./screens/Book/Reading";
 import HomeScreen from "./screens/Home/HomeScreen";
 import { AuthProvider } from "./logic/context";
 import {Provider} from "react-redux";
 import Store from "./store";
+import BookScreen from "./screens/Book/BookScreen";
+import { RootStackParamList } from "./interfaces/types";
 
-const Stack = createStackNavigator();
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -39,9 +42,9 @@ export default function App() {
               />
               <Stack.Screen
                 name="BookDetailScreen"
-                component={SingleBookPage}
+                component={BookScreen}
                 options={{
-                  headerShown: true,
+                  headerShown: false,
                   title: "",
                 }}
               />
@@ -56,6 +59,13 @@ export default function App() {
               <Stack.Screen
                 name="signup"
                 component={Signup}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ReadingScreen"
+                component={ReadingScreen}
                 options={{
                   headerShown: false,
                 }}

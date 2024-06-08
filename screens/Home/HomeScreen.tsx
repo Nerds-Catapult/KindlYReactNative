@@ -21,8 +21,6 @@ import {
   expectedCategory,
 } from "../../interfaces/types";
 import { toast, Toasts } from "@backpackapp-io/react-native-toast";
-import { useDispatch } from "react-redux";
-import {setBook} from '../../reducers/bookReducers';
 
 export default function HomeScreen() {
   const navigation = useNavigation() as any;
@@ -46,7 +44,6 @@ export default function HomeScreen() {
     author: [],
   });
 
-  const dispatch = useDispatch();
 
   const selectBookToDisplay = (bookId: number) => {
     navigation.navigate("BookDetailScreen", { bookId });

@@ -1,30 +1,15 @@
-import React, { useState, useEffect } from 'react';
+  import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { toast, Toasts } from '@backpackapp-io/react-native-toast';
 import axios from 'axios';
 import { AuthContext } from '../../../logic/context';
+import { expectedJson } from '../../../interfaces/types';
 
 const Login = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState("johndoe@gmail.com");
   const [password, setPassword] = useState("password");
   const [loading, setLoading] = useState<boolean>(false);
   const { login, authToken } = React.useContext(AuthContext);
-  
-  interface expectedJson{
-    status: number,
-    message: string,
-    isAuthenticated: boolean,
-    token: string
-    data: {
-      id: string,
-      name: string,
-      email: string,
-      phone: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null
-  }
-  
 
   const handleLogin = async () => {
     if (  !email || !password) {
