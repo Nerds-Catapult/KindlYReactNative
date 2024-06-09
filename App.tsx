@@ -6,7 +6,6 @@ import { SafeAreaView } from "react-native";
 import Login from "./screens/Auth/login/login";
 import Signup from "./screens/Auth/signup/signup";
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
-import ReadingScreen from "./screens/Book/Reading";
 import HomeScreen from "./screens/Home/HomeScreen";
 import { AuthProvider } from "./logic/context";
 import {Provider} from "react-redux";

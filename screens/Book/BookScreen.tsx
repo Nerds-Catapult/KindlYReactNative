@@ -17,6 +17,8 @@ import { toast, Toasts } from "@backpackapp-io/react-native-toast";
 import { AuthContext } from "../../logic/context";
 import { BackHandler } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Pdf from "react-native-pdf";
+
 
 type BookScreenNavigationProp = RouteProp<
 RootStackParamList,
@@ -36,21 +38,20 @@ interface expectedUser {
     email: string;
     phoneNumber: string;
   };
-
 }
 
 const BookScreen = ({ route }: Props) => {
 const { authToken } = React.useContext(AuthContext);
 const [loading, setLoading] = React.useState<boolean>(false);
 const [showPurchase, setShowPurchase] = React.useState<boolean>(false);
-const [book, setBook] = React.useState<expectedBook["books"][0] | null>(null);
+const [book, setBook] = React.useState<expectedBook["books"][0] | null>(null);  
+const [readingAction, setReadingAction] = React.useState<"Continue Reading" | "Purchase"> ("Continue Reading");
 const [user, setUser] = React.useState<expectedUser["data"] | null>(null);
 const [formData, setFormData] = React.useState({
   phoneNumber: "",
   email: "",
 });
   
-  const navigation = useNavigation();
 
 const handleChange = (value: string, name: string) => {
   setFormData({
