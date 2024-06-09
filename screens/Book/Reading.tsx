@@ -41,7 +41,7 @@ const ReadingScreen = ({ route }: Props) => {
     const fetchBook = async () => {
       try {
         const response = await fetch(
-          `https://just-actually-ape.ngrok-free.app/api/book/${bookId}`
+          `https://sasha-ys6k.onrender.com/api/book/${bookId}`
         );
         const data: ExpectedBook = await response.json();
         if (data.status === 200) {

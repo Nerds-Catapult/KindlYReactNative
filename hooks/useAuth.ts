@@ -22,7 +22,7 @@ const useAuth = () => {
     const signIn = async (data: signinRequest) => {
       try {
         const response = await axios.post<signinResponse>(
-          "https://just-actually-ape.ngrok-free.app/api/login",
+          "https://sasha-ys6k.onrender.com/api/login",
           data
         );
         setToken(response.data.token);
@@ -35,7 +35,7 @@ const useAuth = () => {
     const signUp = async (data: signupRequest) => {
       try {
         const response = await axios.post<signupResponse>(
-          "https://just-actually-ape.ngrok-free.app/api/register",
+          "https://sasha-ys6k.onrender.com/api/register",
           data
         );
         setToken(response.data.token);

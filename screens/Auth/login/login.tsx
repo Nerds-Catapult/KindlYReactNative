@@ -12,14 +12,14 @@ const Login = ({ navigation }: { navigation: any }) => {
   const { login, authToken } = React.useContext(AuthContext);
 
   const handleLogin = async () => {
-    if (  !email || !password) {
+    if (!email || !password) {
       toast("All fields are required");
       return;
     }
     try {
       setLoading(true);
       const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/login-user",
+        "https://sasha-ys6k.onrender.com/api/login-user",
         {
           method: "POST",
           headers: {
@@ -47,13 +47,18 @@ const Login = ({ navigation }: { navigation: any }) => {
   };
 
   const checkAuth = async () => {
-    if (authToken == null || authToken == "" || authToken == undefined || !authToken) {
+    if (
+      authToken == null ||
+      authToken == "" ||
+      authToken == undefined ||
+      !authToken
+    ) {
       return;
     }
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://just-actually-ape.ngrok-free.app/api/auth",
+        "https://sasha-ys6k.onrender.com/api/auth",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -69,7 +74,7 @@ const Login = ({ navigation }: { navigation: any }) => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     checkAuth();

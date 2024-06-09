@@ -56,7 +56,7 @@ export default function HomeScreen() {
           return;
         }
         const response = await fetch(
-          "https://just-actually-ape.ngrok-free.app/api/auth",
+          "https://sasha-ys6k.onrender.com/api/auth",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -90,7 +90,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/categories"
+        "https://sasha-ys6k.onrender.com/api/categories"
       );
       const data: expectedCategory = await response.json();
       data && setCategories(data);
@@ -104,9 +104,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/books"
-      );
+      const response = await fetch("https://sasha-ys6k.onrender.com/api/books");
       const data: expectedBook = await response.json();
       data && setBooks(data);
     };
@@ -116,7 +114,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchAuthors = async () => {
       const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/authors"
+        "https://sasha-ys6k.onrender.com/api/authors"
       );
       const data: expectedAuthor = await response.json();
       data && setAuthors(data);

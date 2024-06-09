@@ -28,7 +28,7 @@ const Signup = ({ navigation }: { navigation: any }) => {
         return;
       }
       const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/auth",
+        "https://sasha-ys6k.onrender.com/api/auth",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -54,7 +54,7 @@ const Signup = ({ navigation }: { navigation: any }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://just-actually-ape.ngrok-free.app/api/create-user",
+        "https://sasha-ys6k.onrender.com/api/create-user",
         {
           method: "POST",
           headers: {

@@ -63,14 +63,11 @@ const handleChange = (value: string, name: string) => {
 const fetchUser = async () => {
   try {
     setLoading(true);
-    const response = await fetch(
-      `https://just-actually-ape.ngrok-free.app/api/auth`,
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
+    const response = await fetch(`https://sasha-ys6k.onrender.com/api/auth`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
     const data: expectedUser = await response.json();
     if (data.status !== 200) {
       toast(data.message);
@@ -110,7 +107,7 @@ useEffect(() => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://just-actually-ape.ngrok-free.app/api/book/${bookId}`
+        `https://sasha-ys6k.onrender.com/api/book/${bookId}`
       );
       const data: expectedBook = await response.json();
       if (data.status !== 200) {

@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
           return;
         }
         const response = await fetch(
-          "https://just-actually-ape.ngrok-free.app/api/auth",
+          "https://sasha-ys6k.onrender.com/api/auth",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
