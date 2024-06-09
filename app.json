@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Kndly",
+    "name": "Sasha Reads",
     "slug": "sasha-reads",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,14 +16,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kndly"
+      "bundleIdentifier": "com.kndly",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash_image.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kndly"
+      "package": "com.kndly",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
