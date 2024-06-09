@@ -10,11 +10,7 @@ import Pdf from "react-native-pdf";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../interfaces/types";
 
-type BookDetailScreenRouteProp = RouteProp<
-  RootStackParamList,
-  "ReadingScreen"
->;
-
+type BookDetailScreenRouteProp = RouteProp<RootStackParamList, "BookDetailScreen">;
 type Props = {
   route: BookDetailScreenRouteProp;
 };

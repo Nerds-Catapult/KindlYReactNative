@@ -63,13 +63,13 @@ export default function App() {
                   headerShown: false,
                 }}
               />
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="ReadingScreen"
                 component={ReadingScreen}
                 options={{
                   headerShown: false,
                 }}
-              />
+              /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>

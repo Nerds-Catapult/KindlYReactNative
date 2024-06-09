@@ -68,5 +68,4 @@ export type RootStackParamList = {
     BookDetailScreen: { bookId: number}
     CategoryScreen: undefined;
     AuthorScreen: undefined;
-    ReadingScreen: { bookId: number}
 }
